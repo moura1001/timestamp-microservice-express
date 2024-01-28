@@ -24,6 +24,12 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/:date?", function (req, res) {
+  if (!req.params.date) {
+    const date = new Date();
+    res.json({ unix: date.getTime(), utc: date.toUTCString() });
+    return;
+  }
+
   const isTimestampMillisecond = /^\d{13}$/.test(req.params.date);
   const dateObj = isTimestampMillisecond
     ? new Date(Number(req.params.date))
